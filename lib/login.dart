@@ -266,7 +266,7 @@ class _LoginPageState extends State<LoginPage> {
         route();
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
-          print('No user found for that email.');
+          //print('No user found for that email.');
         } else if (e.code == 'wrong-password') {
           print('Wrong password provided for that user.');
         }
@@ -275,3 +275,4 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
+// This is a comment
