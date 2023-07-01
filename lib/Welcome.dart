@@ -1,66 +1,114 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:project/Teacher.dart';
+import 'Teacher.dart';
+class Welcome extends StatefulWidget {
+  const Welcome({ Key? key }) : super(key: key);
 
+  @override
+  _WelcomeState createState() => _WelcomeState();
+}
 
-class Welcome extends StatelessWidget {
+class _WelcomeState extends State<Welcome> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          image: DecorationImage(image: NetworkImage(
-              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJ3OaUCJh5JO3WqtPFqrt6DOTlu6nboBApV6Uo5qWWjTIdpHQCW7A1HR8wAOHbhcnQPk4&usqp=CAU'),fit: BoxFit.cover
-
-          )
-      ),
-      child: Scaffold(
-    backgroundColor : Colors.transparent,
-    body: SingleChildScrollView (
-      child:  Column(
-      children: [
-      Container(
-          color: Colors.transparent,
-          width: MediaQuery.of(context).size.width,
-        //  height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.only(left: 35,top: 100),
-          child: Text('About NSS' , style: TextStyle(color: Colors.black, fontSize: 33), )
-
-      ),
-        const SizedBox(
-          height: 20,
-        ),
-
-        Container(
-            color: Colors.transparent,
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(left: 30),
-            child: Text('National Service Scheme (NSS) was introduced in 1969 with the primary objective of developing the personality and character of the student youth through voluntary community service. Education through Service is the purpose of the NSS. The ideological orientation of the NSS is inspired by the ideals of Mahatma Gandhi.' , style: TextStyle(color: Colors.black, fontSize: 15), )
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-
-        Container(
-            color: Colors.transparent,
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(left: 30,top: 25),
-            child: Text('National Service Scheme (NSS) was introduced in 1969 with the primary objective of developing the personality and character of the student youth through voluntary community service. Education through Service is the purpose of the NSS. The ideological orientation of the NSS is inspired by the ideals of Mahatma Gandhi.' , style: TextStyle(color: Colors.black, fontSize: 15), )
-        ),
-
-        const SizedBox(
-          height: 50,
-        ),
-
-        ElevatedButton(onPressed: (){
-
-          Navigator.pushNamed(context, '/teacher');
-
-        }, child: const Text('Take a Look at the Events'))
-
+    return Scaffold(
+      backgroundColor: Color(0xffFFC3A6),
+      body: Container(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const SizedBox(height: 50),
+            FadeInRight(
+              duration: const Duration(milliseconds: 1500),
+              child: Image.network('https://media3.giphy.com/media/FohU7pcZlaNQce7RJB/giphy.gif?cid=6c09b952zxriqfee02elq73ajcjs19xtst2t1xncwu6hkubb&ep=v1_stickers_related&rid=giphy.gif&ct=ts'
+                ,fit: BoxFit.cover,),
+            ),
+            FadeInUp(
+              duration: const Duration(milliseconds: 1000),
+              delay: const Duration(milliseconds: 500),
+              child: Container(
+                  padding: const EdgeInsets.only(left: 50, top: 40, right: 20),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(60),
+                      topRight: Radius.circular(60),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color(0xffFFC3A6).withOpacity(0.5),
+                        offset: const Offset(0, -5),
+                        blurRadius: 20,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FadeInUp(
+                          duration: const Duration(milliseconds: 1000),
+                          delay: const Duration(milliseconds: 1000),
+                          from: 50,
+                          child: const Text(
+                            'Discover the \n Upcoming Events.🔥',
+                            // textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        FadeInUp(
+                          duration: const Duration(milliseconds: 1000),
+                          delay: const Duration(milliseconds: 1000),
+                          from: 60,
+                          child: Text(
+                            ' Explore and Register⛰',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        FadeInUp(
+                          duration: const Duration(milliseconds: 1000),
+                          delay: const Duration(milliseconds: 1000),
+                          from: 70,
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                            child: TextButton(
+                              onPressed: () {
+                                // reload the page
+                                Navigator.of(context).pushReplacementNamed('/');
+                              },
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Teacher()));
+                                },
+                                child: const Text(
+                                  'EXPLORE NOW ☕️',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ]
+                  )
+              ),
+            ),
           ],
         ),
-    )
-
-      )
+      ),
     );
   }
 }

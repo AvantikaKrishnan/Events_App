@@ -83,22 +83,14 @@ class _TestState extends State<Test> {
                 await referenceImageToUpload.putFile(File(file!.path));
                 imageUrl = await referenceImageToUpload.getDownloadURL();
               }
-
-
               catch (error){
-
               }
               setState(() {
                 showSpinner = false;
               });
-
-              print(imageUrl);
-
-            }, icon:  Icon(Icons.camera_alt)),
+            }, icon:  const Icon(Icons.camera_alt)),
               const Text('Name of Event',textAlign: TextAlign.right, style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold,  )
               ),
-
-
               TextField(
                 decoration: InputDecoration(
                   focusedBorder:OutlineInputBorder(

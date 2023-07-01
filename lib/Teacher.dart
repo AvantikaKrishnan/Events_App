@@ -3,33 +3,29 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project/Add_Event.dart';
-import 'package:project/displayEverything.dart';
-import 'login.dart';
-
-
 
 class Teacher extends StatefulWidget {
   const Teacher({super.key});
-
   @override
   State<Teacher> createState() => _TeacherState();
 }
-
-late String nameofEvent = '';
-late String doc = '';
-late String datetime ='';
-late String description ='';
-late String image = '';
-late String id = '';
+var year;
+var month;
+var day;
+var hour;
+var min;
+String id = '';
+String nameOfEvent = '';
+String img = '';
+String desc = '';
+String ln = '';
+late Timestamp Dt;
 late Timestamp t ;
 
 class _TeacherState extends State<Teacher> {
-
   final myController = TextEditingController();
   List allresults = [];
   List resultList = [];
-
-
   List<String> docIds = [];
 
   getInfoStream () async{
@@ -37,46 +33,33 @@ class _TeacherState extends State<Teacher> {
     for (var ids in data.docs){
       docIds.add(ids.reference.id);
     }
-
-    print(docIds);
-
     setState(() {
       allresults = data.docs;
     });
     searchResultList();
   }
-
-  // Future getDocIds() async{
-  //   await FirebaseFirestore.instance.collection('info').get().then((snapshot) => snapshot.docs.forEach((document) {
-  //     print(document.reference);
-  //     docIds.add(document.reference.id);
-  //   }),
-  //   );
-  // }
   @override
   void initState() {
     super.initState();
     // Start listening to changes.
     myController.addListener(_printLatestValue);
   }
+
+
   @override
   void dispose() {
-    // Clean up the controller when the widget is removed from the widget tree.
-    // This also removes the _printLatestValue listener.
     myController.dispose();
     super.dispose();
   }
+
   @override
   void didChangeDependencies(){
     getInfoStream();
     super.didChangeDependencies();
   }
+
   void _printLatestValue() {
-    print('Second text field: ${myController.text}');
     searchResultList();
-  }
-  display2(){
-    var showResults = [] ;
   }
 
   searchResultList(){
@@ -125,10 +108,9 @@ class _TeacherState extends State<Teacher> {
       appBar: AppBar(
         leading: BackButton(
             onPressed: () =>
-
                 Navigator.popUntil(context, ModalRoute.withName('/welcome'))
         ),
-        backgroundColor: Color(0xFFFFCFD2),
+        backgroundColor: Colors.transparent,
         title: const Text("Teacher"),
         actions: [
           IconButton(
@@ -142,10 +124,9 @@ class _TeacherState extends State<Teacher> {
         ],
       ),
       body: Column(
-
       children: <Widget>[
         Container(
-          padding: EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(15.0),
         child:CupertinoSearchTextField(
 
         controller: myController,
@@ -157,33 +138,34 @@ class _TeacherState extends State<Teacher> {
     itemBuilder: (context,index)
         {
           return  Container(
-              color: (index % 2 == 0) ? Color(0xFFF9DCC4): Color(0xFFFCD5CE),
+              decoration: BoxDecoration(
+              border: Border.all(
+          style: BorderStyle.solid,
+          width: 1.0,
+                color: (index % 2 == 0) ? const Color(0xFF184E77): const Color(0xFF168AAD),
+          ),
+          borderRadius: BorderRadius.circular(30.0),
+              ),
               child:ListTile(
-            hoverColor: Color(0xFFADE8F4),
-            //  tileColor: Color(0xFFADE8F4),
-              contentPadding: EdgeInsets.symmetric(horizontal: 8.0) ,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 8.0) ,
               onTap: (){
-                nameofEvent = resultList[index]['Name Of Event'];
-                description = resultList[index]['Description'];
-                image = resultList[index]['Image'];
-                datetime = resultList[index]['Date and Time'].toDate().toString();
                 id = resultList[index]['Id'].toString();
-
-
-
-
+                nameOfEvent = resultList[index]['Name Of Event'].toString();
+                desc = resultList[index]['Description'].toString();
+                img = resultList[index]['Image'].toString();
+                ln = resultList[index]['link'].toString();
+                Dt = resultList[index]['Date and Time'];
+                DateTime d = Dt.toDate();
+                 year = d.year;
+                 month= d.month;
+                 day = d.day;
+                 hour = d.hour;
+                 min = d.minute;
                 Navigator.pushNamed(context, '/displayeverything');
-
-
               },
-
               title: Text(resultList[index]['Name Of Event']),
-              subtitle: Text(resultList[index]['Date and Time'].toDate().toString()),
-              trailing:  Icon(Icons.keyboard_arrow_right, color: Colors.grey, size: 30.0),
-
-
-
-
+              subtitle: Text("${resultList[index]['Date and Time'].toDate().day}/${resultList[index]['Date and Time'].toDate().month}/${resultList[index]['Date and Time'].toDate().year}"),
+              trailing:  const Icon(Icons.keyboard_arrow_right, color: Colors.grey, size: 30.0),
               )
         );
     },
@@ -193,25 +175,16 @@ class _TeacherState extends State<Teacher> {
     ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-
-          Navigator.push(context, MaterialPageRoute(builder: (context) => (add_Event())));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => (const add_Event())));
         },
         child: const Icon(Icons.add),
       ),
     );
-
-
-
   }
-
   Future<void> logout(BuildContext context) async {
     const CircularProgressIndicator();
     await FirebaseAuth.instance.signOut();
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => LoginPage(),
-      ),
-    );
+   // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(),),);
+    Navigator.popUntil(context, ModalRoute.withName("/"));
   }
 }

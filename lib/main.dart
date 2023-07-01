@@ -28,8 +28,6 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Named Routes Demo',
-      // Start the app with the "/" named route. In this case, the app starts
-      // on the FirstScreen widget.
       initialRoute: '/',
       routes: {
         '/': (context) => LoginPage(),
@@ -38,7 +36,7 @@ class _MyAppState extends State<MyApp> {
         '/welcome' :(context) => Welcome(),
         '/displayeverything' : (context) => const DisplayEverything(),
         '/update' : (context) => const updateEvent(),
-        '/display_student':(context) => const Display_Student(),
+        '/display_student':(context) => const Display_student(),
         '/welcome_student':(context) => Welcome_Student(),
 
 

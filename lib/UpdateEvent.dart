@@ -1,13 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-
 import 'Teacher.dart';
-import 'display.dart';
 import 'displayEverything.dart';
 
 class updateEvent extends StatefulWidget {
@@ -19,55 +16,49 @@ class updateEvent extends StatefulWidget {
 
 class _updateEvent extends State<updateEvent> {
 
-
-  late String nameofEventUpdated = '';
-  late String datetimeUpdated ='';
-  late String descriptionUpdated ='';
-  late String imageUpdated = '';
   bool showSpinner = false;
   CollectionReference info = FirebaseFirestore.instance.collection('info');
-  DateTime dateTime = DateTime.parse(datetime);
-
-  //late String nameofEvent = '';
-  //late String doc = '';
-  //late String datetime ='';
-  //late String description ='';
-  //late String image = '';
+  DateTime dateTime = DateTime(year,month,day,hour,min);
 
   display_image() {
     if (image == '') {
-      return Center(
-        child: ProfilePicture(
-          name: "nnn",
-          radius: 100,
-          fontsize: 30,
-          img: 'https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg',
+      return Card(
+        elevation: 50,
+          shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+        child: Center(
+            child: Container(
+              height:  (MediaQuery.of(context).size.height)*0.6,
+              width: (MediaQuery.of(context).size.width),
+              decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  image: DecorationImage(image: NetworkImage('https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg'),fit: BoxFit.fill)),
+            )
         ),
       );
     }
     else {
       return Center(
-        child: ProfilePicture(
-          name: "nnn",
-          radius: 100,
-          fontsize: 30,
-          img: image,
-        ),
+          child: Card(
+            elevation: 30,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            child: Container(
+              height:  (MediaQuery.of(context).size.height)*0.6,
+              width: (MediaQuery.of(context).size.width),
+              decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  image: DecorationImage(image: NetworkImage(image),fit: BoxFit.fill)),
+            ),
+          )
       );
     }
   }
-  @override
-  void initState() {
-    image;
-    display_image();
-    super.initState();
-  }
-
-
 
   @override
   Widget build(BuildContext context) {
-    print(dateTime);
     final hours = dateTime.hour.toString().padLeft(2,'0');
     final minutes = dateTime.minute.toString().padLeft(2, '0');
 
@@ -79,19 +70,13 @@ class _updateEvent extends State<updateEvent> {
         appBar: AppBar(
           leading: BackButton(
             onPressed: () => {
-
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const DisplayEverything()))
+                 Navigator.popUntil(context, ModalRoute.withName('/teacher'))
                   }),
-          backgroundColor: Color(0xFFF8AD9D),
+          backgroundColor: Colors.transparent,
           title: const Text('Update Event'),
         ),
         body: SingleChildScrollView (
-
           child: Column(
-
               children: <Widget>[
                 const SizedBox(
                   height: 20,
@@ -107,7 +92,6 @@ class _updateEvent extends State<updateEvent> {
                     }
 
                     String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
-
                     Reference referanceRoot = FirebaseStorage.instance.ref();
                     Reference referenceDirImages = referanceRoot.child('images');
                     Reference referenceImageToUpload = referenceDirImages.child(uniqueFileName);
@@ -119,8 +103,6 @@ class _updateEvent extends State<updateEvent> {
                       await referenceImageToUpload.putFile(File(file!.path));
                       image = await referenceImageToUpload.getDownloadURL();
                     }
-
-
                     catch (error){
 
                     }
@@ -128,39 +110,37 @@ class _updateEvent extends State<updateEvent> {
                       showSpinner = false;
                     });
 
-                    print(imageUpdated);
-
-                  }, icon:  Icon(Icons.camera_alt)),
+                  }, icon:  const Icon(Icons.camera_alt)),
                 ),
                 const SizedBox(
                   height: 40,
                 ),
-                const Text('Name of Event',textAlign: TextAlign.right, style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold,  )
+                const Text('Name of Event',textAlign: TextAlign.right, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,  )
                 ),
 
                 TextField(
                   controller:
-                  TextEditingController(text: nameofEvent),
+                  TextEditingController(text: name_of_event),
                   decoration: InputDecoration(
                     focusedBorder:OutlineInputBorder(
                       borderSide: const BorderSide(
-                          width: 3, color:Color(0xFFF8AD9D),),
+                          width: 3, color:Color(0xFF006D77),),
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
-                          width: 3, color: Color(0xFFF8AD9D)),
+                          width: 3, color: Color(0xFF0096C7)),
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
                   onChanged: (value){
-                    nameofEvent = value;
+                    name_of_event = value;
                   },
                 ),
                 const SizedBox(
                   height: 40,
                 ),
-                const Text('Description',textAlign: TextAlign.right, style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold,  )
+                const Text('Description',textAlign: TextAlign.right, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,  )
                 ),
                 TextField(
                   controller:
@@ -168,93 +148,116 @@ class _updateEvent extends State<updateEvent> {
                   decoration: InputDecoration(
                     focusedBorder:OutlineInputBorder(
                       borderSide: const BorderSide(
-                          width: 3, color: Colors.lightBlueAccent),
+                          width: 3, color: Color(0xFF006D77)),
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(
-                          width: 3, color: Color(0xFFF8AD9D)),
+                          width: 3, color: Color(0xFF0096C7)),
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  style: const TextStyle(fontSize: 25),
+                  style: const TextStyle(fontSize: 15),
                   maxLines: 50,
                   minLines: 2,
                   onChanged: (value){
                     description = value;
-
                   },
                 ),
                 const SizedBox(
                   height: 40,
                 ),
-
-                const Text('Select Date',textAlign: TextAlign.right, style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold,  )
-
+                const Text('Link',textAlign: TextAlign.right, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,  )
                 ),
+                TextField(
+                  controller:
+                  TextEditingController(text: link),
+                  decoration: InputDecoration(
+                    focusedBorder:OutlineInputBorder(
+                      borderSide: const BorderSide(
+                          width: 2, color: Color(0xFF006D77)),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(
+                          width: 2, color: Color(0xFF0096C7)),
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                  onChanged: (value){
+                    link = value;
+                  },
+                ),
+                const SizedBox(height: 20,),
+                Row(children: [
+                  const Text('Select Date: ',textAlign: TextAlign.right, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,  )
 
+                  ),
+                  const SizedBox(width: 20,),
+                  ElevatedButton(
+                    onPressed: () async{
+                      final date = await pickDate();
+                      if(date == null)
+                        return;
+                      final newDateTime = DateTime(
+                        date.year,
+                        date.month,
+                        date.day,
+                        dateTime.hour,
+                        dateTime.minute,
+                      );
 
-                ElevatedButton(
+                      setState(() {
+                        dateTime = newDateTime;
+                      });
+
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFF006D77),),
                     child: Text('${dateTime.year}/${dateTime.month}/${dateTime.day}'),
-                  onPressed: () async{
-                  final date = await pickDate();
-                  if(date == null)
-                    return;
-                  final newDateTime = DateTime(
-                    date.year,
-                    date.month,
-                    date.day,
-                    dateTime.hour,
-                    dateTime.minute,
-                  );
+                  ),
+                ],),
 
-                  setState(() {
-
-                    dateTime = newDateTime;
-                  });
-
-                },
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFF8AD9D),),
-                ),
                 const SizedBox(
                   height: 40,
                 ),
-                const Text('Select Time',textAlign: TextAlign.right, style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold,  )
-                ),
-                ElevatedButton(
+                Row(children: [
+                  const Text('Select Time: ',textAlign: TextAlign.right, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,  )
+                  ),
+                  const SizedBox(width: 20,),
+                  ElevatedButton(
+                    onPressed: () async{
+
+
+                      final time = await pickTime();
+                      if(time == null)
+                        return;
+                      final newDateTime = DateTime(
+                        dateTime.year,
+                        dateTime.month,
+                        dateTime.day,
+                        time.hour,
+                        time.minute,
+                      );
+                      setState(() {
+                        dateTime = newDateTime;
+                      });
+                    }, style: ElevatedButton.styleFrom(
+                    primary: const Color(0xFF006D77),),
                     child: Text('$hours:$minutes'),
-                  onPressed: () async{
+                  ),
+                ],),
 
-
-                  final time = await pickTime();
-                  if(time == null)
-                    return;
-                  final newDateTime = DateTime(
-                    dateTime.year,
-                    dateTime.month,
-                    dateTime.day,
-                    time.hour,
-                    time.minute,
-                  );
-
-                  setState(() {
-                    dateTime = newDateTime;
-                  });
-                }, style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFF8AD9D),),
-                ),
                 const SizedBox(
                   height: 40,
                 ),
                 ElevatedButton(
-                    child: Text('Submit'),
                     onPressed: () async{
 
 
 
                   await info.doc(id).update({
-                    'Name Of Event' : nameofEvent,
+                    'Name Of Event' : name_of_event,
                     'Description' : description,
                     'Image' : image,
                     'Date and Time' : dateTime,
@@ -277,7 +280,8 @@ class _updateEvent extends State<updateEvent> {
 
                 //  Navigator.popUntil(context, ModalRoute.withName('/teacher'));
                 },style: ElevatedButton.styleFrom(
-                primary: Color(0xFFF8AD9D),),
+                primary: Color(0xFF0096C7),),
+                    child: Text('Submit'),
                 ),
               ]
 

@@ -46,6 +46,10 @@ dependencies:
   firebase_database: ^10.1.0
   flutter_neumorphic: ^3.2.0
   velocity_x: ^3.6.0
+  url_launcher: ^6.1.11
+  intl: ^0.17.0
+  animate_do: ^3.0.2
+  simple_animations: ^5.0.1
 
 dev_dependencies:
   flutter_test:

@@ -19,12 +19,12 @@ class _RegisterState extends State<Register> {
   final _formkey = GlobalKey<FormState>();
   final _auth = FirebaseAuth.instance;
 
-  final TextEditingController passwordController = new TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmpassController =
-  new TextEditingController();
-  final TextEditingController name = new TextEditingController();
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController mobile = new TextEditingController();
+  TextEditingController();
+  final TextEditingController name = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController mobile = TextEditingController();
   bool _isObscure = true;
   bool _isObscure2 = true;
   File? file;
@@ -38,7 +38,7 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         image: DecorationImage(
             image: AssetImage('assets/register.png'),fit: BoxFit.cover
         ),
@@ -52,8 +52,8 @@ class _RegisterState extends State<Register> {
                 color: Colors.transparent,
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
-            padding: EdgeInsets.only(left: 35,top: 130),
-            child: Text('Create \n Account' , style: TextStyle(color: Colors.white, fontSize: 33), )
+            padding: const EdgeInsets.only(left: 35,top: 130),
+            child: const Text('Create \n Account' , style: TextStyle(color: Colors.white, fontSize: 33), )
         ),
 
           SingleChildScrollView(
@@ -63,7 +63,7 @@ class _RegisterState extends State<Register> {
                 children: [
 
             Container(
-                    margin: EdgeInsets.all(12),
+                    margin: const EdgeInsets.all(12),
                     child: Form(
                       key: _formkey,
                       child: Column(
@@ -81,7 +81,7 @@ class _RegisterState extends State<Register> {
                                     borderRadius: BorderRadius.circular(10))),
 
                             validator: (value) {
-                              if (value!.length == 0) {
+                              if (value!.isEmpty) {
                                 return "Email cannot be empty";
                               }
                               if (!RegExp(
@@ -95,7 +95,7 @@ class _RegisterState extends State<Register> {
                             onChanged: (value) {},
                             keyboardType: TextInputType.emailAddress,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           TextFormField(
@@ -133,7 +133,7 @@ class _RegisterState extends State<Register> {
                             },
                             onChanged: (value) {},
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           TextFormField(
@@ -166,13 +166,13 @@ class _RegisterState extends State<Register> {
                             },
                             onChanged: (value) {},
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
+                              const Text(
                                 "Role : ",
                                 style: TextStyle(
                                   fontSize: 20,
@@ -191,7 +191,7 @@ class _RegisterState extends State<Register> {
                                     value: dropDownStringItem,
                                     child: Text(
                                       dropDownStringItem,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
@@ -209,7 +209,7 @@ class _RegisterState extends State<Register> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           Row(
@@ -217,7 +217,7 @@ class _RegisterState extends State<Register> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               MaterialButton(
-                                shape: RoundedRectangleBorder(
+                                shape: const RoundedRectangleBorder(
                                     borderRadius:
                                     BorderRadius.all(Radius.circular(20.0))),
                                 elevation: 5.0,
@@ -231,16 +231,16 @@ class _RegisterState extends State<Register> {
                                     ),
                                   );
                                 },
-                                child: Text(
+                                color: Colors.white,
+                                child: const Text(
                                   "Login",
                                   style: TextStyle(
                                     fontSize: 20,
                                   ),
                                 ),
-                                color: Colors.white,
                               ),
                               MaterialButton(
-                                shape: RoundedRectangleBorder(
+                                shape: const RoundedRectangleBorder(
                                     borderRadius:
                                     BorderRadius.all(Radius.circular(20.0))),
                                 elevation: 5.0,
@@ -252,17 +252,17 @@ class _RegisterState extends State<Register> {
                                   signUp(emailController.text,
                                       passwordController.text, rool);
                                 },
-                                child: Text(
+                                color: Colors.white,
+                                child: const Text(
                                   "Register",
                                   style: TextStyle(
                                     fontSize: 20,
                                   ),
                                 ),
-                                color: Colors.white,
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           
@@ -281,7 +281,7 @@ class _RegisterState extends State<Register> {
   }
 
   void signUp(String email, String password, String rool) async {
-    CircularProgressIndicator();
+    const CircularProgressIndicator();
     if (_formkey.currentState!.validate()) {
       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
